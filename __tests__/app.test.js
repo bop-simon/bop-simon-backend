@@ -11,4 +11,8 @@ describe('backend routes', () => {
   afterAll(() => {
     pool.end();
   });
+
+  it('should do something', async () => {
+
+  });
 });
