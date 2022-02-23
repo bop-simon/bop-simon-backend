@@ -1,0 +1,33 @@
+const pool = require('../lib/utils/pool');
+const setup = require('../data/setup');
+const request = require('supertest');
+const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
+
+
+const agent = request.agent(app);
+
+describe('user routes test', () => {
+  beforeEach(() => {
+    return setup(pool);
+  });
+  afterAll(() => {
+    pool.end();
+  });
+
+  it('should create a new user', async () => {
+    const mockUser = {
+      username: 'myusername',
+      password: 'anyword'
+    };
+
+    await UserService.create(mockUser);
+
+    const res = await agent.post('/api/v1/users').send(mockUser);
+
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      username: 'myusername',
+    });
+  });
+});

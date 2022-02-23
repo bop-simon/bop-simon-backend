@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS scores CASCADE;
 CREATE TABLE users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     username TEXT NOT NULL,
-    password TEXT NOT NULL
+    password_hash TEXT NOT NULL
 );
 
 CREATE TABLE songs (
