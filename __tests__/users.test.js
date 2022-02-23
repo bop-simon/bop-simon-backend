@@ -44,4 +44,17 @@ describe('user routes test', () => {
     });
 
   });
+  it('should logout a user', async () => {
+    const mockUser =  {
+      username: 'myusername',
+      password: 'anyword'
+    };
+
+    const res = await agent.delete('/api/v1/users/sessions').send(mockUser);
+
+    expect(res.body).toEqual({
+      success: true,
+      message: 'Signed out successfully',
+    });
+  });
 });
