@@ -2,6 +2,7 @@
 -- The SQL in this file will be executed when you run `npm run setup-db`
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS songs CASCADE;
+DROP TABLE IF EXISTS scores CASCADE;
 
 CREATE TABLE users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -22,4 +23,4 @@ CREATE TABLE scores (
     song_id INT NOT NULL,
     FOREIGN KEY (song_id) REFERENCES users(id),
     score BIGINT NOT NULL
-)
+);
