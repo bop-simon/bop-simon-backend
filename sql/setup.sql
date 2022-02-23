@@ -15,7 +15,7 @@ CREATE TABLE songs (
     level INT NOT NULL
 );
 
-CREATE TABLES scores (
+CREATE TABLE scores (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
