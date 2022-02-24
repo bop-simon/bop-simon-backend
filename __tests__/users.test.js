@@ -17,7 +17,9 @@ describe('user routes test', () => {
   it('should create a new user', async () => {
     const mockUser = {
       username: 'myusername',
-      password: 'anyword'
+      password: 'anyword',
+      score: '50',
+      songs: '1',
     };
 
     await UserService.create(mockUser);
@@ -27,8 +29,12 @@ describe('user routes test', () => {
     expect(res.body).toEqual({
       id: expect.any(String),
       username: 'myusername',
+      score: '50',
+      songs: expect.any(String),
+      created_at: expect.any(String),
     });
   });
+
   it('should sign in a user', async () => {
     const mockUser =  {
       username: 'myusername',
@@ -44,6 +50,21 @@ describe('user routes test', () => {
     });
 
   });
+  it('should get user by id', async () => {
+    const mockUser = {
+      username: 'myusername',
+      password: 'anyword',
+      score: '50',
+      songs: '1',
+    };
+
+    const newUser = await UserService.create(mockUser);
+
+    const res = await agent.get(`/api/v1/users/${newUser.id}`);
+
+    expect(res.body).toEqual({ ...newUser, id: expect.any(String), created_at: expect.any(String) });
+
+  });
   it('should logout a user', async () => {
     const mockUser =  {
       username: 'myusername',
@@ -55,6 +76,12 @@ describe('user routes test', () => {
     expect(res.body).toEqual({
       success: true,
       message: 'Signed out successfully',
-    });
+    },
+    { id: expect.any(String),
+      created_at: expect.any(String),
+      score: expect.any(String),
+      songs: expect.any(String),
+    },
+    );
   });
 });
