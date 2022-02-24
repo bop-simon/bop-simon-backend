@@ -50,6 +50,27 @@ describe('user routes test', () => {
     });
 
   });
+  it('should get the leaderboard', async () => {
+    const mockUser = {
+      username: 'myusername1',
+      password: 'anyword',
+      score: '100',
+      songs: '1'
+    };
+    const mockUser2 = {
+      username: 'myusername2',
+      password: 'anyword',
+      score: '60',
+      songs: '2'
+    };
+
+    await UserService.create(mockUser);
+    await UserService.create(mockUser2);
+
+    const res = await agent.get('/api/v1/users/leaderboard');
+
+    expect(res.body).toEqual([{ username: 'myusername1', score: '100' }, { username: 'myusername2', score: '60' }]);
+  });
   it('should get user by id', async () => {
     const mockUser = {
       username: 'myusername',
@@ -65,12 +86,13 @@ describe('user routes test', () => {
     expect(res.body).toEqual({ ...newUser, id: expect.any(String), created_at: expect.any(String) });
 
   });
+
+
   it('should logout a user', async () => {
     const mockUser =  {
       username: 'myusername',
       password: 'anyword'
     };
-
     const res = await agent.delete('/api/v1/users/sessions').send(mockUser);
 
     expect(res.body).toEqual({
