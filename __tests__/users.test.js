@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const User = require('../lib/models/User');
 
 const agent = request.agent(app);
 
@@ -70,6 +71,20 @@ describe('user routes test', () => {
     const res = await agent.get('/api/v1/users/leaderboard');
 
     expect(res.body).toEqual([{ username: 'myusername1', score: '100' }, { username: 'myusername2', score: '60' }]);
+  });
+  it('should get all users', async () => {
+    const mockUser = {
+      username: 'myusername1',
+      password: 'anyword',
+      score: '100',
+      songs: '1'
+    };
+
+    const newUser = await UserService.create(mockUser);
+
+    const res = await agent.get('/api/v1/users');
+
+    expect(res.body).toEqual([{ ...newUser, id: expect.any(String), created_at: expect.any(String) }]);
   });
   it('should get user by id', async () => {
     const mockUser = {

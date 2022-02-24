@@ -21,3 +21,4 @@ CREATE TABLE notes (
 );
 
 -- insert seed data for users and notes
+
