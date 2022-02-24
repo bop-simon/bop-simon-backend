@@ -19,3 +19,5 @@ CREATE TABLE notes (
     notes TEXT NOT NULL,
     level INT NOT NULL
 );
+
+-- insert seed data for users and notes

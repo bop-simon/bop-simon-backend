@@ -87,6 +87,35 @@ describe('user routes test', () => {
 
   });
 
+  it('should update existing user', async () => {
+    const mockUser = {
+      username: 'myusername',
+      password: 'anyword',
+      score: '50',
+      songs: '1',
+    };
+
+    const newUser = await UserService.create(mockUser);
+
+    const res = await agent.patch(`/api/v1/users/${newUser.id}`)
+      .send({
+        username: 'newusername',
+        password: 'anythingnow',
+        score: '50',
+        songs: '1',
+      });
+
+    const updatedUser = {
+      id: expect.any(String),
+      username: 'newusername',
+      score: '50',
+      songs: '1',
+      created_at: expect.any(String),
+    };
+
+    expect(res.body).toEqual(updatedUser);
+  });
+
 
   it('should logout a user', async () => {
     const mockUser =  {
