@@ -3,7 +3,6 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
-const User = require('../lib/models/User');
 
 const agent = request.agent(app);
 
@@ -53,38 +52,32 @@ describe('user routes test', () => {
   });
   it('should get the leaderboard', async () => {
     const mockUser = {
-      username: 'myusername1',
+      username: 'anyone',
       password: 'anyword',
-      score: '100',
+      score: '1000',
       songs: '1'
     };
-    const mockUser2 = {
-      username: 'myusername2',
-      password: 'anyword',
-      score: '60',
-      songs: '2'
-    };
+
 
     await UserService.create(mockUser);
-    await UserService.create(mockUser2);
 
     const res = await agent.get('/api/v1/users/leaderboard');
 
-    expect(res.body).toEqual([{ username: 'myusername1', score: '100' }, { username: 'myusername2', score: '60' }]);
+    expect(res.body).toEqual([{ username: 'jakethesnake', score: '1500' }, { username: 'hoosier_mama', score: '1250' }, { username: 'hogwarts_dropout', score: '1000' }, { username: 'kiss_my_axe', score: '1000' }, { username: 'anyone', score: '1000' },  { username: 'hairypoppins', score: '900' }]);
   });
   it('should get all users', async () => {
     const mockUser = {
-      username: 'myusername1',
+      username: 'jakethesnake',
       password: 'anyword',
-      score: '100',
-      songs: '1'
+      score: '1500',
+      songs: '5'
     };
 
     const newUser = await UserService.create(mockUser);
 
     const res = await agent.get('/api/v1/users');
 
-    expect(res.body).toEqual([{ ...newUser, id: expect.any(String), created_at: expect.any(String) }]);
+    expect(res.body).toEqual([{ ...newUser, id: expect.any(String), created_at: expect.any(String) }, { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'hoosier_mama' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'hogwarts_dropout' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'kiss_my_axe' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'hairypoppins' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'jakethesnake' }]);
   });
   it('should get user by id', async () => {
     const mockUser = {
