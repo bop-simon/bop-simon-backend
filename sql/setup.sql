@@ -53,5 +53,3 @@ VALUES ('1', ARRAY['c2', 'd2', 'e2']),
 
 -- INSERT INTO users (username, password_hash, score, songs)
 -- VALUES ('kiss_my_axe', 'rustynail', '1000', '5');
-
-
