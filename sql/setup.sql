@@ -12,9 +12,9 @@ CREATE TABLE users (
 
 CREATE TABLE fav_songs (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    notes VARCHAR[],
+    notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    user_id INT NOT NULL,
+    user_id BIGINT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

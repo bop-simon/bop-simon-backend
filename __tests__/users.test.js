@@ -6,7 +6,7 @@ const UserService = require('../lib/services/UserService');
 
 const agent = request.agent(app);
 
-describe('user routes test', () => {
+describe.skip('user routes test', () => {
   beforeEach(() => {
     return setup(pool);
   });
