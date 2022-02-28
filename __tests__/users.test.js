@@ -75,7 +75,7 @@ describe('user routes test', () => {
 
   });
 
-  it.only('should update existing user', async () => {
+  it.skip('should update existing user', async () => {
     const mockUser = {
       username: 'myusername',
       password: 'anyword',
@@ -105,7 +105,7 @@ describe('user routes test', () => {
   });
 
 
-  it.skip('should logout a user', async () => {
+  it('should logout a user', async () => {
     const mockUser =  {
       username: 'myusername',
       password: 'anyword'
