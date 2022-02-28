@@ -27,8 +27,6 @@ CREATE TABLE profiles (
 );
 
 
-
-
 INSERT INTO users (username, password_hash)
 VALUES ('bop-simon', 'helloworld'),
 ('hola-lola', 'urgency');
