@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const User = require('../lib/models/User');
 
 const agent = request.agent(app);
 
@@ -46,80 +47,65 @@ describe('user routes test', () => {
     });
 
   });
-  //   it('should get the leaderboard', async () => {
-  //     const mockUser = {
-  //       username: 'anyone',
-  //       password: 'anyword',
-  //     };
+  it('should get the leaderboard', async () => {
+    const mockUser = {
+      username: 'anyone',
+      password: 'anyword',
+    };
 
 
-  //     await UserService.create(mockUser);
+    await UserService.create(mockUser);
 
-  //     const res = await agent.get('/api/v1/users/leaderboard');
+    const res = await agent.get('/api/v1/users/leaderboard');
 
-  //     expect(res.body).toEqual([{ username: 'jakethesnake', score: '1500' }, { username: 'hoosier_mama', score: '1250' }, { username: 'hogwarts_dropout', score: '1000' }, { username: 'kiss_my_axe', score: '1000' }, { username: 'anyone', score: '1000' },  { username: 'hairypoppins', score: '900' }]);
-  //   });
-  //   it('should get all users', async () => {
-  //     const mockUser = {
-  //       username: 'jakethesnake',
-  //       password: 'anyword',
-  //       score: '1500',
-  //       songs: '5'
-  //     };
+    expect(res.body).toEqual([{ username: 'bop-simon', score: '1500' }, { username: 'hoosier_mama', score: '1300' }, { username: 'hogwarts_dropout', score: '1200' }, { username: 'kiss_my_axe', score: '1000' }]);
+  });
+  it('should get all users', async () => {
 
-  //     const newUser = await UserService.create(mockUser);
+    const res = await agent.get('/api/v1/users');
 
-  //     const res = await agent.get('/api/v1/users');
-
-  //     expect(res.body).toEqual([{ ...newUser, id: expect.any(String), created_at: expect.any(String) }, { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'hoosier_mama' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'hogwarts_dropout' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'kiss_my_axe' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'hairypoppins' },  { created_at: expect.any(String), id: expect.any(String), score: expect.any(String), songs: expect.any(String), username: 'jakethesnake' }]);
-  //   });
-  //   it('should get user by id', async () => {
-  //     const mockUser = {
-  //       username: 'myusername',
-  //       password: 'anyword',
-  //       score: '50',
-  //       songs: '1',
-  //     };
-
-  //     const newUser = await UserService.create(mockUser);
-
-  //     const res = await agent.get(`/api/v1/users/${newUser.id}`);
-
-  //     expect(res.body).toEqual({ ...newUser, id: expect.any(String), created_at: expect.any(String) });
-
-  //   });
-
-  //   it('should update existing user', async () => {
-  //     const mockUser = {
-  //       username: 'myusername',
-  //       password: 'anyword',
-  //       score: '50',
-  //       songs: '1',
-  //     };
-
-  //     const newUser = await UserService.create(mockUser);
-
-  //     const res = await agent.patch(`/api/v1/users/${newUser.id}`)
-  //       .send({
-  //         username: 'newusername',
-  //         password: 'anythingnow',
-  //         score: '50',
-  //         songs: '1',
-  //       });
-
-  //     const updatedUser = {
-  //       id: expect.any(String),
-  //       username: 'newusername',
-  //       score: '50',
-  //       songs: '1',
-  //       created_at: expect.any(String),
-  //     };
-
-  //     expect(res.body).toEqual(updatedUser);
-  //   });
+    expect(res.body).toEqual([{ id: expect.any(String), username: 'bop-simon', created_at: expect.any(String) }, { id: expect.any(String), username: 'hoosier_mama', created_at: expect.any(String) }, { id: expect.any(String), username: 'hogwarts_dropout', created_at: expect.any(String) }, { id: expect.any(String), username: 'kiss_my_axe', created_at: expect.any(String) }]);
+  });
+  it('should get user by id', async () => {
 
 
-  it('should logout a user', async () => {
+    const res = await agent.get('/api/v1/users/1');
+
+    expect(res.body).toEqual({ username: 'bop-simon', created_at: expect.any(String), score: expect.any(String), bio: 'simon the all time master of the bop', notes: 'c2, c4, d2, e2, f2, g3, a2, b3' });
+
+  });
+
+  it.only('should update existing user', async () => {
+    const mockUser = {
+      username: 'myusername',
+      password: 'anyword',
+    };
+
+    const newUser = await UserService.create(mockUser);
+
+    const res = await agent.patch(`/api/v1/users/${newUser.id}`)
+      .send({
+        username: 'newusername',
+        password: 'anythingnow',
+        score: '700',
+        bio: 'new to the bop simon world',
+        notes: 'c2, d3, b2',
+      });
+
+    const updatedUser = {
+      id: expect.any(String),
+      username: 'newusername',
+      score: '700',
+      bio: 'new to the bop simon world',
+      notes: 'c2, d3, b2',
+      created_at: expect.any(String),
+    };
+
+    expect(res.body).toEqual(updatedUser);
+  });
+
+
+  it.skip('should logout a user', async () => {
     const mockUser =  {
       username: 'myusername',
       password: 'anyword'
@@ -129,12 +115,25 @@ describe('user routes test', () => {
     expect(res.body).toEqual({
       success: true,
       message: 'Signed out successfully',
-    },
-    { id: expect.any(String),
-      created_at: expect.any(String),
-      score: expect.any(String),
-      songs: expect.any(String),
-    },
+    }
     );
+  });
+
+  it('should delete a user', async () => {
+    const mockUser = {
+      username: 'hellomatey',
+      password: 'goodbyematey'
+    };
+    const user = await UserService.create(mockUser);
+    const res = await agent.delete(`/api/v1/users/${user.id}`);
+
+
+    expect(res.body).toEqual({ id: '5',
+      username: 'hellomatey',
+      created_at: expect.any(String),
+      score: undefined,
+      bio: undefined,
+      notes: undefined });
+    expect(await User.deleteUser(user.id)).toBeNull();
   });
 });
