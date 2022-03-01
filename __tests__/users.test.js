@@ -15,7 +15,7 @@ describe('user routes test', () => {
     pool.end();
   });
 
-  it('should create a new user', async () => {
+  it.only('should create a new user', async () => {
     const mockUser = {
       username: 'myusername',
       password: 'anyword',
