@@ -15,13 +15,11 @@ describe('user routes test', () => {
     pool.end();
   });
 
-  it.only('should create a new user', async () => {
+  it('should create a new user', async () => {
     const mockUser = {
       username: 'myusername',
       password: 'anyword',
     };
-
-    await UserService.create(mockUser);
 
     const res = await agent.post('/api/v1/users').send(mockUser);
 
