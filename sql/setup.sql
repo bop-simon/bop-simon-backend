@@ -14,7 +14,7 @@ CREATE TABLE fav_songs (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    user_id INT NOT NULL,
+    user_id BIGINT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -25,8 +25,6 @@ CREATE TABLE profiles (
     score BIGINT,
     bio TEXT
 );
-
-
 
 
 INSERT INTO users (username, password_hash)
