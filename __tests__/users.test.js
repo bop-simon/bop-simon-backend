@@ -75,13 +75,15 @@ describe('user routes test', () => {
 
   });
 
-  it.skip('should update existing user', async () => {
+  it('should update existing user', async () => {
     const mockUser = {
       username: 'myusername',
       password: 'anyword',
     };
 
     const newUser = await UserService.create(mockUser);
+
+    await agent.post('/api/v1/users/sessions').send({ username: newUser.username, password: mockUser.password });
 
     const res = await agent.patch(`/api/v1/users/${newUser.id}`)
       .send({
@@ -95,9 +97,6 @@ describe('user routes test', () => {
     const updatedUser = {
       id: expect.any(String),
       username: 'newusername',
-      score: '700',
-      bio: 'new to the bop simon world',
-      notes: 'c2, d3, b2',
       created_at: expect.any(String),
     };
 
@@ -125,10 +124,13 @@ describe('user routes test', () => {
       password: 'goodbyematey'
     };
     const user = await UserService.create(mockUser);
-    const res = await agent.delete(`/api/v1/users/${user.id}`);
+
+    await agent.post('/api/v1/users/sessions').send({ username: user.username, password: mockUser.password });
+
+    const res = await agent.delete('/api/v1/users/');
 
 
-    expect(res.body).toEqual({ id: '5',
+    expect(res.body).toEqual({ id: expect.any(String),
       username: 'hellomatey',
       created_at: expect.any(String),
       score: undefined,
