@@ -7,7 +7,7 @@ const User = require('../lib/models/User');
 
 const agent = request.agent(app);
 
-describe.skip('user routes test', () => {
+describe('user routes test', () => {
   beforeEach(() => {
     return setup(pool);
   });
