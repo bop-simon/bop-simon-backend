@@ -127,7 +127,7 @@ describe('user routes test', () => {
 
     await agent.post('/api/v1/users/sessions').send({ username: user.username, password: mockUser.password });
 
-    const res = await agent.delete('/api/v1/users/');
+    const res = await agent.delete(`/api/v1/users/${user.id}`);
 
 
     expect(res.body).toEqual({ id: expect.any(String),

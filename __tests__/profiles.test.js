@@ -3,6 +3,7 @@ const request = require('supertest');
 const setup = require('../data/setup');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const Profile = require('../lib/models/Profile');
 
 const agent = request.agent(app);
 
@@ -87,5 +88,31 @@ describe('testing profile routes', () => {
     };
 
     expect(res.body).toEqual(updatedProfile);
+  });
+  it('should delete profile information', async () => {
+    const mockUser = {
+      username: 'mockuser',
+      password: 'mockpassword'
+    };
+
+    const mockProfile = {
+      score: '500',
+      bio: 'mocking out a profile bio',
+    };
+
+    const user = await UserService.create(mockUser);
+    await agent.post('/api/v1/users/sessions').send({ username: user.username, password: mockUser.password });
+
+    const profile = await agent.post('/api/v1/profiles').send(mockProfile);
+
+    const res = await agent.delete(`/api/v1/profiles/${profile.userId}`);
+
+    expect(res.body).toEqual({
+      bio: 'mocking out a profile bio',
+      id: expect.any(String),
+      score: expect.any(String),
+      userId: expect.any(String)
+    });
+    expect(await Profile.deleteProfile(profile.userId)).toBeNull();
   });
 });
