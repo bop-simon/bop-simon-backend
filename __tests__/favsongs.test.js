@@ -3,6 +3,8 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserSong = require('../lib/models/FavSong.js');
+const UserService = require('../lib/services/UserService');
+const { signinUser } = require('../lib/services/UserService');
 
 const agent = request.agent(app);
 
@@ -26,11 +28,23 @@ describe.only('fav songs routes', () => {
   });
 
   it('should create a new fav song', async () => {
+    const mockUser = {
+      username: 'anything',
+      password: 'anywho',
+    };
+
+    const user = await UserService.create(mockUser);
+
+    await agent.post('/api/v1/users/sessions').send({
+      username: user.username,
+      password: mockUser.password
+    });
+
     const res = await agent.post('/api/v1/usersongs').send(mockSong);
 
     expect(res.body).toEqual({
       id: expect.any(String),
-      user_id: '1',
+      user_id: '5',
       notes:'A7, B3, F2, G7, E2',
       created_at: expect.any(String),
     });
