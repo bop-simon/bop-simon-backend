@@ -21,7 +21,7 @@ describe('user routes test', () => {
       password: 'anyword',
     };
 
-    const res = await agent.post('/api/v1/users').send(mockUser);
+    const res = await agent.post('/api/v1/users/signup').send(mockUser);
 
     expect(res.body).toEqual({
       id: expect.any(String),
