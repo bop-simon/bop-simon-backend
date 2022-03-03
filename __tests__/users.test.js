@@ -69,7 +69,7 @@ describe('user routes test', () => {
 
     const res = await agent.get('/api/v1/users/1');
 
-    expect(res.body).toEqual({ username: 'bop-simon', created_at: expect.any(String), score: expect.any(String), bio: 'simon the all time master of the bop', notes: 'c2, c4, d2, e2, f2, g3, a2, b3' });
+    expect(res.body).toEqual({ id: expect.any(String), username: 'bop-simon', created_at: expect.any(String), score: expect.any(String), bio: 'simon the all time master of the bop', notes: 'c2, c4, d2, e2, f2, g3, a2, b3' });
 
   });
 
