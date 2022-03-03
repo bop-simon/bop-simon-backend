@@ -75,10 +75,10 @@ describe('testing profile routes', () => {
     await agent.post('/api/v1/users/sessions').send({ username: user.username, password: newUser.password });
 
 
-    const profile = await agent.post('/api/v1/profiles').send(mockProfile);
+    await agent.post('/api/v1/profiles').send(mockProfile);
 
 
-    const res = await agent.patch(`/api/v1/profiles/${profile.body.id}`).send({
+    const res = await agent.patch('/api/v1/profiles').send({
       score: '1200',
       bio: 'mocking out a new bio'
     });
