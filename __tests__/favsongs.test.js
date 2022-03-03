@@ -5,6 +5,7 @@ const app = require('../lib/app');
 const UserSong = require('../lib/models/FavSong.js');
 const UserService = require('../lib/services/UserService');
 const { signinUser } = require('../lib/services/UserService');
+const User = require('../lib/models/User');
 
 const agent = request.agent(app);
 
@@ -50,12 +51,26 @@ describe.only('fav songs routes', () => {
     });
   });
 
-  it('should get all fav songs for one user', async () => {
-    const song1 = await UserSong.insert(mockSong);
-    const song2 = await UserSong.insert(mockSong1);
+  it.skip('should get all fav songs for one user', async () => {
+    const mockUser = {
+      username: 'nobody',
+      password: 'yess'
+    };
 
-    const res = await agent.get('/api/v1/usersongs/1');
+    const user = await UserService.create(mockUser);
 
+    await agent.post('/api/v1/users/sessions').send({
+      username: user.username,
+      password: mockUser.password,
+    });
+    const song1 = await agent.post('/api/v1/usersongs').send(mockSong);
+
+    console.log(song1);
+    const song2 = await agent.post('/api/v1/usersongs').send(mockSong1);
+
+
+    const res = await agent.get('/api/v1/usersongs');
+    console.log(res.body, 'yoooooooooooo');
     expect(res.body).toEqual(
       expect.arrayContaining([{
         id: expect.any(String),
