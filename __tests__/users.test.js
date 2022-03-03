@@ -62,7 +62,11 @@ describe('user routes test', () => {
 
     const res = await agent.get('/api/v1/users');
 
-    expect(res.body).toEqual([{ id: expect.any(String), username: 'bop-simon', created_at: expect.any(String) }, { id: expect.any(String), username: 'hoosier_mama', created_at: expect.any(String) }, { id: expect.any(String), username: 'hogwarts_dropout', created_at: expect.any(String) }, { id: expect.any(String), username: 'kiss_my_axe', created_at: expect.any(String) }]);
+    expect(res.body).toEqual([
+      { id: expect.any(String), username: 'bop-simon', created_at: expect.any(String) }, 
+      { id: expect.any(String), username: 'hoosier_mama', created_at: expect.any(String) }, 
+      { id: expect.any(String), username: 'hogwarts_dropout', created_at: expect.any(String) }, 
+      { id: expect.any(String), username: 'kiss_my_axe', created_at: expect.any(String) }]);
   });
   it('should get user by id', async () => {
 
@@ -81,9 +85,9 @@ describe('user routes test', () => {
 
     const newUser = await UserService.create(mockUser);
 
-    await agent.post('/api/v1/users/sessions').send({ username: newUser.username, password: mockUser.password });
+    await agent.post('/api/v1/users/sessions').send(newUser);
 
-    const res = await agent.patch(`/api/v1/users/${newUser.id}`)
+    const res = await agent.patch(`/api/v1/users`)
       .send({
         username: 'newusername',
         password: 'anythingnow',
