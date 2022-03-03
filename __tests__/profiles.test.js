@@ -27,9 +27,11 @@ describe('testing profile routes', () => {
 
     const user = await UserService.create(newUser);
 
-    await agent.post('/api/v1/users/sessions').send({ username: user.username, password: newUser.password });
+    const response = await agent.post('/api/v1/users/sessions').send(newUser);
 
-    const res = await agent.post('/api/v1/profiles').send(mockProfile);
+    console.log('resonse', response.body)
+
+    const res = await agent.post('/api/v1/profiles').send(mockProfile).withCredentials();
 
     expect(res.body).toEqual({
       userId: '5',

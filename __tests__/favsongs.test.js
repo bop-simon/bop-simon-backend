@@ -19,7 +19,7 @@ const mockSong1 = {
   notes:'B4, G2, A2, F4, A2'
 };
 
-describe.only('fav songs routes', () => {
+describe('fav songs routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
@@ -51,7 +51,7 @@ describe.only('fav songs routes', () => {
     });
   });
 
-  it.skip('should get all fav songs for one user', async () => {
+  it('should get all fav songs for one user', async () => {
     const mockUser = {
       username: 'nobody',
       password: 'yess'
@@ -70,15 +70,15 @@ describe.only('fav songs routes', () => {
 
 
     const res = await agent.get('/api/v1/usersongs');
-    console.log(res.body, 'yoooooooooooo');
+
     expect(res.body).toEqual(
       expect.arrayContaining([{
         id: expect.any(String),
-        ...song1,
+        ...song1.body,
         created_at: expect.any(String),
       }, {
         id: expect.any(String),
-        ...song2,
+        ...song2.body,
         created_at: expect.any(String),
       }])
     );
